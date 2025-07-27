@@ -1,377 +1,490 @@
 import { type NextRequest, NextResponse } from "next/server"
-
-// Exercise templates for different languages and topics
-const exerciseTemplates = {
-  Rust: {
-    fundamentals: {
-      title: "Rust Basics: Variables and Functions",
-      description: "Practice Rust syntax, variable declarations, and basic functions",
-      difficulty: "Easy",
-      instructions:
-        "Complete the function to demonstrate basic Rust concepts including variable binding, mutability, and function definitions.",
-      starterCode: `// Rust Fundamentals Exercise
-// Complete the functions below
-
-fn greet_user(name: &str) -> String {
-    // TODO: Create a greeting message
-    // Hint: Use format! macro to create formatted strings
-}
-
-fn calculate_area(length: f64, width: f64) -> f64 {
-    // TODO: Calculate and return the area
-}
-
-fn main() {
-    let user_name = "Alice";
-    println!("{}", greet_user(user_name));
-    
-    let area = calculate_area(5.0, 3.0);
-    println!("Area: {}", area);
-}`,
-      solution: `fn greet_user(name: &str) -> String {
-    format!("Hello, {}! Welcome to Rust!", name)
-}
-
-fn calculate_area(length: f64, width: f64) -> f64 {
-    length * width
-}
-
-fn main() {
-    let user_name = "Alice";
-    println!("{}", greet_user(user_name));
-    
-    let area = calculate_area(5.0, 3.0);
-    println!("Area: {}", area);
-}`,
-      explanation:
-        "This solution demonstrates Rust's ownership system with string slices (&str), the format! macro for string formatting, and basic function definitions with type annotations.",
-      hints: [
-        "Use the format! macro to create formatted strings in Rust",
-        "Remember that Rust functions need explicit return types",
-        "String slices (&str) are used for borrowed string data",
-        "The last expression in a function is automatically returned",
-      ],
-      testCases: [
-        {
-          input: 'greet_user("Bob")',
-          expectedOutput: "Hello, Bob! Welcome to Rust!",
-          description: "Should create a personalized greeting",
-        },
-        {
-          input: "calculate_area(4.0, 6.0)",
-          expectedOutput: "24.0",
-          description: "Should calculate area correctly",
-        },
-      ],
-      concepts: ["Variables", "Functions", "String formatting", "Type annotations"],
-    },
-    ownership: {
-      title: "Rust Ownership and Borrowing",
-      description: "Master Rust's unique ownership system and borrowing rules",
-      difficulty: "Medium",
-      instructions: "Complete the functions to demonstrate ownership, borrowing, and references in Rust.",
-      starterCode: `// Ownership and Borrowing Exercise
-// Fix the ownership issues in the code below
-
-fn take_ownership(s: String) {
-    println!("Taking ownership of: {}", s);
-}
-
-fn borrow_string(s: &String) -> usize {
-    // TODO: Return the length of the string
-}
-
-fn modify_string(s: &mut String) {
-    // TODO: Add " - Modified!" to the end of the string
-}
-
-fn main() {
-    let mut my_string = String::from("Hello, Rust");
-    
-    // TODO: Fix the borrowing issues
-    let len = borrow_string(&my_string);
-    println!("Length: {}", len);
-    
-    modify_string(&mut my_string);
-    println!("Modified: {}", my_string);
-    
-    take_ownership(my_string);
-    // println!("{}", my_string); // This would cause an error!
-}`,
-      solution: `fn take_ownership(s: String) {
-    println!("Taking ownership of: {}", s);
-}
-
-fn borrow_string(s: &String) -> usize {
-    s.len()
-}
-
-fn modify_string(s: &mut String) {
-    s.push_str(" - Modified!");
-}
-
-fn main() {
-    let mut my_string = String::from("Hello, Rust");
-    
-    let len = borrow_string(&my_string);
-    println!("Length: {}", len);
-    
-    modify_string(&mut my_string);
-    println!("Modified: {}", my_string);
-    
-    take_ownership(my_string);
-    // println!("{}", my_string); // This would cause an error!
-}`,
-      explanation:
-        "This demonstrates Rust's ownership rules: each value has one owner, borrowing allows temporary access without taking ownership, and mutable references allow modification.",
-      hints: [
-        "Use .len() method to get string length",
-        "Use .push_str() to append to a mutable string",
-        "Remember the difference between &String and &mut String",
-        "Once ownership is moved, the original variable can't be used",
-      ],
-      testCases: [
-        {
-          input: 'borrow_string(&String::from("test"))',
-          expectedOutput: "4",
-          description: "Should return correct string length",
-        },
-      ],
-      concepts: ["Ownership", "Borrowing", "References", "Mutability"],
-    },
-  },
-  TypeScript: {
-    fundamentals: {
-      title: "TypeScript Basics: Types and Interfaces",
-      description: "Practice TypeScript type annotations and interface definitions",
-      difficulty: "Easy",
-      instructions: "Add proper type annotations and create interfaces for the given JavaScript code.",
-      starterCode: `// TypeScript Fundamentals Exercise
-// Add type annotations and create interfaces
-
-// TODO: Create an interface for User
-interface User {
-    // Define the structure here
-}
-
-// TODO: Add proper type annotations
-function greetUser(user) {
-    return \`Hello, \${user.name}! You are \${user.age} years old.\`;
-}
-
-// TODO: Add type annotations for the array and return type
-function getActiveUsers(users) {
-    return users.filter(user => user.isActive);
-}
-
-// TODO: Add type annotations
-function calculateTotal(prices) {
-    return prices.reduce((sum, price) => sum + price, 0);
-}
-
-// Test the functions
-const testUser = {
-    name: "Alice",
-    age: 30,
-    isActive: true
-};
-
-console.log(greetUser(testUser));`,
-      solution: `interface User {
-    name: string;
-    age: number;
-    isActive: boolean;
-}
-
-function greetUser(user: User): string {
-    return \`Hello, \${user.name}! You are \${user.age} years old.\`;
-}
-
-function getActiveUsers(users: User[]): User[] {
-    return users.filter(user => user.isActive);
-}
-
-function calculateTotal(prices: number[]): number {
-    return prices.reduce((sum, price) => sum + price, 0);
-}
-
-const testUser: User = {
-    name: "Alice",
-    age: 30,
-    isActive: true
-};
-
-console.log(greetUser(testUser));`,
-      explanation:
-        "This solution demonstrates TypeScript's type system with interfaces, function parameter types, return types, and array types for better code safety and documentation.",
-      hints: [
-        "Interfaces define the shape of objects in TypeScript",
-        "Use : Type syntax to add type annotations",
-        "Array types can be written as Type[] or Array<Type>",
-        "Function return types come after the parameter list",
-      ],
-      testCases: [
-        {
-          input: "greetUser({name: 'Bob', age: 25, isActive: true})",
-          expectedOutput: "Hello, Bob! You are 25 years old.",
-          description: "Should create proper greeting with type safety",
-        },
-      ],
-      concepts: ["Interfaces", "Type annotations", "Function types", "Array types"],
-    },
-  },
-}
-
-// Generate exercise based on module and language
-function generateExercise(moduleTitle: string, targetLanguage: string, currentLanguage: string, skillLevel: string) {
-  const language = targetLanguage.toLowerCase()
-  const topic = getTopicFromModule(moduleTitle)
-
-  // Try to find specific template
-  const languageTemplates = exerciseTemplates[targetLanguage as keyof typeof exerciseTemplates]
-  if (languageTemplates && languageTemplates[topic as keyof typeof languageTemplates]) {
-    return languageTemplates[topic as keyof typeof languageTemplates]
-  }
-
-  // Generate generic exercise
-  return {
-    title: `${targetLanguage} Practice: ${moduleTitle}`,
-    description: `Practice the key concepts from ${moduleTitle} with hands-on coding`,
-    difficulty: skillLevel === "beginner" ? "Easy" : skillLevel === "advanced" ? "Hard" : "Medium",
-    instructions: `Complete the function below to demonstrate your understanding of ${moduleTitle}. Apply the concepts you learned in this module.`,
-    starterCode: generateStarterCode(language, moduleTitle),
-    solution: generateSolution(language, moduleTitle),
-    explanation: `This exercise demonstrates key concepts from ${moduleTitle} in ${targetLanguage}, helping you practice the syntax and patterns you've learned.`,
-    hints: [
-      `Review the ${moduleTitle} documentation for syntax help`,
-      `Think about how ${targetLanguage} handles this differently from ${currentLanguage}`,
-      "Start with the simplest implementation first",
-      "Test your solution with different inputs",
-    ],
-    testCases: [
-      {
-        input: "Basic test case",
-        expectedOutput: "Expected result",
-        description: "Should handle basic functionality",
-      },
-    ],
-    concepts: [moduleTitle, "Basic syntax", "Problem solving"],
-  }
-}
-
-function getTopicFromModule(moduleTitle: string): string {
-  const title = moduleTitle.toLowerCase()
-  if (title.includes("fundamental") || title.includes("basic") || title.includes("intro")) {
-    return "fundamentals"
-  }
-  if (title.includes("ownership") || title.includes("memory") || title.includes("borrow")) {
-    return "ownership"
-  }
-  if (title.includes("type") || title.includes("interface")) {
-    return "types"
-  }
-  return "fundamentals"
-}
-
-function generateStarterCode(language: string, moduleTitle: string): string {
-  const templates: { [key: string]: string } = {
-    Rust: `// ${moduleTitle} Exercise
-// Complete the function below
-
-fn solve_challenge() -> String {
-    // TODO: Implement your solution here
-    String::from("Hello, World!")
-}
-
-fn main() {
-    println!("{}", solve_challenge());
-}`,
-    TypeScript: `// ${moduleTitle} Exercise
-// Complete the function below
-
-function solveChallenge(): string {
-    // TODO: Implement your solution here
-    return "Hello, World!";
-}
-
-console.log(solveChallenge());`,
-    Python: `# ${moduleTitle} Exercise
-# Complete the function below
-
-def solve_challenge():
-    # TODO: Implement your solution here
-    return "Hello, World!"
-
-print(solve_challenge())`,
-    JavaScript: `// ${moduleTitle} Exercise
-// Complete the function below
-
-function solveChallenge() {
-    // TODO: Implement your solution here
-    return "Hello, World!";
-}
-
-console.log(solveChallenge());`,
-  }
-
-  return templates[language] || templates["JavaScript"]
-}
-
-function generateSolution(language: string, moduleTitle: string): string {
-  const templates: { [key: string]: string } = {
-    Rust: `fn solve_challenge() -> String {
-    String::from("Hello, World!")
-}
-
-fn main() {
-    println!("{}", solve_challenge());
-}`,
-    TypeScript: `function solveChallenge(): string {
-    return "Hello, World!";
-}
-
-console.log(solveChallenge());`,
-    Python: `def solve_challenge():
-    return "Hello, World!"
-
-print(solve_challenge())`,
-    JavaScript: `function solveChallenge() {
-    return "Hello, World!";
-}
-
-console.log(solveChallenge());`,
-  }
-
-  return templates[language] || templates["JavaScript"]
-}
+import { grokAPI } from "../../lib/grok-api"
 
 export async function POST(request: NextRequest) {
   try {
-    console.log("🎯 Generating exercise...")
+    const { language, topic, difficulty, focusArea, learningObjectives } = await request.json()
 
-    const { moduleTitle, targetLanguage, currentLanguage, skillLevel } = await request.json()
+    // Validate required fields
+    if (!language || !topic || !difficulty) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: "Missing required fields: language, topic, difficulty" 
+        },
+        { status: 400 }
+      )
+    }
 
-    console.log("📚 Exercise request:", { moduleTitle, targetLanguage, currentLanguage })
+    console.log("🚀 Generating exercise with Grok for", language)
+    console.log("📝 Parameters:", { language, topic, difficulty, focusArea })
 
-    // Generate exercise using templates
-    const exercise = generateExercise(moduleTitle, targetLanguage, currentLanguage, skillLevel)
+    // Use Grok API to generate the exercise
+    const exercise = await grokAPI.generateExercise({
+      language,
+      topic,
+      difficulty,
+      focusArea,
+      learningObjectives
+    })
 
-    console.log("✅ Exercise generated:", exercise.title)
+    // Enhance exercise with metadata
+    exercise.id = exercise.id || Date.now().toString()
+    exercise.createdAt = new Date().toISOString()
+    exercise.generatedBy = "Grok AI"
+
+    console.log("✅ Exercise generated successfully for", language)
 
     return NextResponse.json({
       success: true,
-      exercise: exercise,
+      exercise,
+      generatedBy: "Grok AI"
     })
+
   } catch (error) {
     console.error("❌ Error generating exercise:", error)
 
+    // Get request data for fallback
+    const body = await request.clone().json().catch(() => ({}))
+    
+    // Create language-specific fallback exercise
+    const fallbackExercise = createLanguageSpecificFallbackExercise(
+      body.language || "JavaScript",
+      body.topic || "fundamentals",
+      body.difficulty || "Easy"
+    )
+    
     return NextResponse.json(
       {
         success: false,
-        error: "Failed to generate exercise",
-        message: error instanceof Error ? error.message : "Unknown error",
+        error: "Failed to generate exercise with Grok AI",
+        message: error instanceof Error ? error.message : "Unknown error occurred",
+        exercise: fallbackExercise,
+        generatedBy: "Language-Specific Template System"
       },
-      { status: 500 },
+      { status: 500 }
     )
+  }
+}
+
+// Language-specific fallback exercise creation
+function createLanguageSpecificFallbackExercise(language: string, topic: string, difficulty: string) {
+  const languageExercises: { [key: string]: any } = {
+    "C++": {
+      title: "C++ Memory Management Exercise",
+      starterCode: `#include <iostream>
+#include <memory>
+
+// TODO: Implement a simple class with proper memory management
+class Student {
+private:
+    std::string name;
+    int age;
+    
+public:
+    // TODO: Add constructor
+    // TODO: Add destructor
+    // TODO: Add copy constructor
+    // TODO: Add assignment operator
+};
+
+int main() {
+    // TODO: Create Student objects and demonstrate proper memory management
+    return 0;
+}`,
+      solution: `#include <iostream>
+#include <memory>
+#include <string>
+
+class Student {
+private:
+    std::string name;
+    int age;
+    
+public:
+    // Constructor
+    Student(const std::string& n, int a) : name(n), age(a) {
+        std::cout << "Student " << name << " created" << std::endl;
+    }
+    
+    // Destructor
+    ~Student() {
+        std::cout << "Student " << name << " destroyed" << std::endl;
+    }
+    
+    // Copy constructor
+    Student(const Student& other) : name(other.name), age(other.age) {
+        std::cout << "Student " << name << " copied" << std::endl;
+    }
+    
+    // Assignment operator
+    Student& operator=(const Student& other) {
+        if (this != &other) {
+            name = other.name;
+            age = other.age;
+        }
+        return *this;
+    }
+    
+    void display() const {
+        std::cout << "Name: " << name << ", Age: " << age << std::endl;
+    }
+};
+
+int main() {
+    Student s1("Alice", 20);
+    Student s2 = s1;  // Copy constructor
+    Student s3("Bob", 22);
+    s3 = s1;  // Assignment operator
+    
+    s1.display();
+    s2.display();
+    s3.display();
+    
+    return 0;
+}`
+    },
+    "Python": {
+      title: "Python Data Structures Exercise",
+      starterCode: `# TODO: Create a class to manage a library of books
+class Library:
+    def __init__(self):
+        # TODO: Initialize empty book collection
+        pass
+    
+    def add_book(self, title, author, year):
+        # TODO: Add a book to the library
+        pass
+    
+    def find_books_by_author(self, author):
+        # TODO: Return all books by a specific author
+        pass
+    
+    def get_books_by_year_range(self, start_year, end_year):
+        # TODO: Return books published within a year range
+        pass
+
+# TODO: Test your Library class
+if __name__ == "__main__":
+    library = Library()
+    # Add test cases here`,
+      solution: `class Library:
+    def __init__(self):
+        self.books = []
+    
+    def add_book(self, title, author, year):
+        book = {
+            'title': title,
+            'author': author,
+            'year': year
+        }
+        self.books.append(book)
+    
+    def find_books_by_author(self, author):
+        return [book for book in self.books if book['author'].lower() == author.lower()]
+    
+    def get_books_by_year_range(self, start_year, end_year):
+        return [book for book in self.books if start_year <= book['year'] <= end_year]
+    
+    def display_all_books(self):
+        for book in self.books:
+            print(f"{book['title']} by {book['author']} ({book['year']})")
+
+if __name__ == "__main__":
+    library = Library()
+    library.add_book("1984", "George Orwell", 1949)
+    library.add_book("Animal Farm", "George Orwell", 1945)
+    library.add_book("Brave New World", "Aldous Huxley", 1932)
+    
+    print("Books by George Orwell:")
+    for book in library.find_books_by_author("George Orwell"):
+        print(f"  {book['title']} ({book['year']})")
+    
+    print("\\nBooks from 1940-1950:")
+    for book in library.get_books_by_year_range(1940, 1950):
+        print(f"  {book['title']} by {book['author']}")`
+    },
+    "Java": {
+      title: "Java Object-Oriented Programming Exercise",
+      starterCode: `// TODO: Create a Vehicle class hierarchy
+abstract class Vehicle {
+    protected String brand;
+    protected String model;
+    protected int year;
+    
+    // TODO: Add constructor
+    // TODO: Add abstract method start()
+    // TODO: Add abstract method stop()
+}
+
+// TODO: Create Car class that extends Vehicle
+class Car extends Vehicle {
+    private int numberOfDoors;
+    
+    // TODO: Implement constructor
+    // TODO: Implement abstract methods
+}
+
+// TODO: Create Motorcycle class that extends Vehicle
+class Motorcycle extends Vehicle {
+    private boolean hasSidecar;
+    
+    // TODO: Implement constructor
+    // TODO: Implement abstract methods
+}
+
+public class VehicleTest {
+    public static void main(String[] args) {
+        // TODO: Create instances and test functionality
+    }
+}`,
+      solution: `abstract class Vehicle {
+    protected String brand;
+    protected String model;
+    protected int year;
+    
+    public Vehicle(String brand, String model, int year) {
+        this.brand = brand;
+        this.model = model;
+        this.year = year;
+    }
+    
+    public abstract void start();
+    public abstract void stop();
+    
+    public void displayInfo() {
+        System.out.println(year + " " + brand + " " + model);
+    }
+}
+
+class Car extends Vehicle {
+    private int numberOfDoors;
+    
+    public Car(String brand, String model, int year, int numberOfDoors) {
+        super(brand, model, year);
+        this.numberOfDoors = numberOfDoors;
+    }
+    
+    @Override
+    public void start() {
+        System.out.println("Car engine started with key ignition");
+    }
+    
+    @Override
+    public void stop() {
+        System.out.println("Car engine stopped");
+    }
+    
+    public int getNumberOfDoors() {
+        return numberOfDoors;
+    }
+}
+
+class Motorcycle extends Vehicle {
+    private boolean hasSidecar;
+    
+    public Motorcycle(String brand, String model, int year, boolean hasSidecar) {
+        super(brand, model, year);
+        this.hasSidecar = hasSidecar;
+    }
+    
+    @Override
+    public void start() {
+        System.out.println("Motorcycle engine started with kick start");
+    }
+    
+    @Override
+    public void stop() {
+        System.out.println("Motorcycle engine stopped");
+    }
+    
+    public boolean hasSidecar() {
+        return hasSidecar;
+    }
+}
+
+public class VehicleTest {
+    public static void main(String[] args) {
+        Car car = new Car("Toyota", "Camry", 2023, 4);
+        Motorcycle motorcycle = new Motorcycle("Harley-Davidson", "Street 750", 2022, false);
+        
+        car.displayInfo();
+        car.start();
+        car.stop();
+        
+        motorcycle.displayInfo();
+        motorcycle.start();
+        motorcycle.stop();
+    }
+}`
+    },
+    "Go": {
+      title: "Go Concurrency Exercise",
+      starterCode: `package main
+
+import (
+    "fmt"
+    "sync"
+    "time"
+)
+
+// TODO: Create a worker function that processes jobs
+func worker(id int, jobs <-chan int, results chan<- int, wg *sync.WaitGroup) {
+    // TODO: Implement worker logic
+}
+
+func main() {
+    // TODO: Set up channels and goroutines
+    // TODO: Send jobs to workers
+    // TODO: Collect results
+}`,
+      solution: `package main
+
+import (
+    "fmt"
+    "sync"
+    "time"
+)
+
+func worker(id int, jobs <-chan int, results chan<- int, wg *sync.WaitGroup) {
+    defer wg.Done()
+    for job := range jobs {
+        fmt.Printf("Worker %d processing job %d\\n", id, job)
+        time.Sleep(time.Millisecond * 100) // Simulate work
+        results <- job * 2 // Double the job number
+    }
+}
+
+func main() {
+    const numWorkers = 3
+    const numJobs = 9
+    
+    jobs := make(chan int, numJobs)
+    results := make(chan int, numJobs)
+    var wg sync.WaitGroup
+    
+    // Start workers
+    for i := 1; i <= numWorkers; i++ {
+        wg.Add(1)
+        go worker(i, jobs, results, &wg)
+    }
+    
+    // Send jobs
+    for j := 1; j <= numJobs; j++ {
+        jobs <- j
+    }
+    close(jobs)
+    
+    // Wait for workers to finish
+    go func() {
+        wg.Wait()
+        close(results)
+    }()
+    
+    // Collect results
+    for result := range results {
+        fmt.Printf("Result: %d\\n", result)
+    }
+}`
+    },
+    "Rust": {
+      title: "Rust Ownership and Borrowing Exercise",
+      starterCode: `// TODO: Fix the ownership and borrowing issues in this code
+fn main() {
+    let mut data = vec![1, 2, 3, 4, 5];
+    
+    // TODO: Implement a function that takes ownership of the vector
+    let result = process_data(data);
+    
+    // TODO: This should work without ownership issues
+    println!("Original data: {:?}", data);
+    println!("Processed result: {:?}", result);
+}
+
+// TODO: Implement this function with proper ownership handling
+fn process_data(data: Vec<i32>) -> Vec<i32> {
+    // TODO: Process the data and return a new vector
+}
+
+// TODO: Implement a function that borrows the data instead
+fn calculate_sum(data: &Vec<i32>) -> i32 {
+    // TODO: Calculate and return the sum
+}`,
+      solution: `fn main() {
+    let mut data = vec![1, 2, 3, 4, 5];
+    
+    // Calculate sum without taking ownership
+    let sum = calculate_sum(&data);
+    println!("Sum: {}", sum);
+    
+    // Clone the data to pass ownership
+    let result = process_data(data.clone());
+    
+    // This works because we cloned the data
+    println!("Original data: {:?}", data);
+    println!("Processed result: {:?}", result);
+    
+    // Demonstrate mutable borrowing
+    modify_data(&mut data);
+    println!("Modified data: {:?}", data);
+}
+
+fn process_data(mut data: Vec<i32>) -> Vec<i32> {
+    // Process the data by doubling each element
+    for item in &mut data {
+        *item *= 2;
+    }
+    data
+}
+
+fn calculate_sum(data: &Vec<i32>) -> i32 {
+    data.iter().sum()
+}
+
+fn modify_data(data: &mut Vec<i32>) {
+    data.push(6);
+    data.push(7);
+}`
+    }
+  }
+
+  // Get language-specific exercise or create a generic one
+  const exerciseTemplate = languageExercises[language] || {
+    title: `${language} Programming Exercise`,
+    starterCode: `// ${language} ${topic} exercise\n// TODO: Implement the solution`,
+    solution: `// ${language} solution\n// Implementation would go here`
+  }
+
+  return {
+    id: Date.now().toString(),
+    title: exerciseTemplate.title || `${language} ${topic} Exercise`,
+    description: `Practice ${language} ${topic} concepts`,
+    difficulty,
+    language,
+    topic,
+    estimatedTime: "30 minutes",
+    instructions: `Complete the ${language} exercise focusing on ${topic} concepts. Follow ${language} best practices and conventions.`,
+    starterCode: exerciseTemplate.starterCode,
+    solution: exerciseTemplate.solution,
+    explanation: `This exercise helps you practice ${topic} concepts specific to ${language}. It demonstrates ${language} syntax, conventions, and best practices.`,
+    hints: [
+      `Remember to follow ${language} naming conventions`,
+      `Focus on ${language}-specific ${topic} patterns`,
+      `Use ${language} standard library features when appropriate`
+    ],
+    learningObjectives: [
+      `Understand ${topic} concepts in ${language}`,
+      `Apply ${language}-specific programming patterns`,
+      `Write idiomatic ${language} code`
+    ],
+    testCases: [
+      {
+        input: "example input",
+        expected: "expected output",
+        description: `Test case for ${language} ${topic}`
+      }
+    ],
+    createdAt: new Date().toISOString(),
+    generatedBy: "Language-Specific Template System"
   }
 }

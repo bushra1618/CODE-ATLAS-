@@ -1,10 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['@ai-sdk/openai']
-  },
+  serverExternalPackages: ['@ai-sdk/openai'],
   env: {
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    GROK_API_KEY: process.env.GROK_API_KEY,
   },
   eslint: {
     ignoreDuringBuilds: true,

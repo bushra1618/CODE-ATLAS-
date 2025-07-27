@@ -6,8 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Code, Plus, Trophy, Target, Clock, Play, BookOpen, Zap, Settings, LogOut } from "lucide-react"
+import { Code, Plus, Trophy, Target, Clock, Play, BookOpen, Zap, Settings, LogOut, MessageSquare } from "lucide-react"
 import { PathwayCreator } from "@/pathway-creator"
+import { AiQuestionAnswer } from "@/components/ai-question-answer"
 
 interface Pathway {
   id: string
@@ -86,7 +87,7 @@ export default function DashboardPage() {
   }
 
   if (showPathwayCreator) {
-    return <PathwayCreator onClose={() => setShowPathwayCreator(false)} onPathwayCreated={handlePathwayCreated} />
+    return <PathwayCreator onBack={() => setShowPathwayCreator(false)} onPathwayCreated={handlePathwayCreated} />
   }
 
   return (
@@ -305,30 +306,59 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* Recent Activity */}
+        {/* Recent Activity and AI Assistant */}
         {pathways.length > 0 && (
-          <div className="mt-12">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">Recent Activity</h3>
-            <Card className="bg-white/60 backdrop-blur-xl border border-white/50 shadow-lg">
-              <CardContent className="p-6">
-                <div className="space-y-4">
-                  {pathways.slice(0, 3).map((pathway, index) => (
-                    <div key={pathway.id} className="flex items-center space-x-4 p-4 bg-white/40 rounded-lg">
-                      <div className="w-10 h-10 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg flex items-center justify-center">
-                        <BookOpen className="w-5 h-5 text-blue-600" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="font-semibold text-gray-900">{pathway.title}</div>
-                        <div className="text-sm text-gray-600">
-                          {pathway.progress > 0 ? `${pathway.progress}% complete` : "Just created"}
+          <div className="mt-12 grid lg:grid-cols-2 gap-8">
+            {/* Recent Activity */}
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Recent Activity</h3>
+              <Card className="bg-white/60 backdrop-blur-xl border border-white/50 shadow-lg">
+                <CardContent className="p-6">
+                  <div className="space-y-4">
+                    {pathways.slice(0, 3).map((pathway, index) => (
+                      <div key={pathway.id} className="flex items-center space-x-4 p-4 bg-white/40 rounded-lg">
+                        <div className="w-10 h-10 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg flex items-center justify-center">
+                          <BookOpen className="w-5 h-5 text-blue-600" />
                         </div>
+                        <div className="flex-1">
+                          <div className="font-semibold text-gray-900">{pathway.title}</div>
+                          <div className="text-sm text-gray-600">
+                            {pathway.progress > 0 ? `${pathway.progress}% complete` : "Just created"}
+                          </div>
+                        </div>
+                        <div className="text-sm text-gray-500">{new Date(pathway.createdAt).toLocaleDateString()}</div>
                       </div>
-                      <div className="text-sm text-gray-500">{new Date(pathway.createdAt).toLocaleDateString()}</div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* AI Learning Assistant */}
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                <MessageSquare className="w-6 h-6 text-purple-600" />
+                AI Learning Assistant
+              </h3>
+              <AiQuestionAnswer 
+                context="Learning Dashboard - Ask questions about programming, learning paths, or get coding help"
+                placeholder="Ask about programming concepts, learning strategies, or get help with code..."
+              />
+            </div>
+          </div>
+        )}
+
+        {/* AI Assistant for users with no pathways */}
+        {pathways.length === 0 && (
+          <div className="mt-12">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <MessageSquare className="w-6 h-6 text-purple-600" />
+              AI Learning Assistant
+            </h3>
+            <AiQuestionAnswer 
+              context="Getting Started - Ask questions about programming languages, learning paths, or career advice"
+              placeholder="Ask me anything about programming, which language to learn, or how to get started..."
+            />
           </div>
         )}
       </main>
